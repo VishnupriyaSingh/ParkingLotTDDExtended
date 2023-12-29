@@ -65,4 +65,25 @@ class ParkingLotTest {
         ParkingLot parkingLot = new ParkingLot(100);
         assertNull(parkingLot.unparkCar(null), "Unparking should fail for a null ticket.");
     }
+
+    @Test
+    void testFullSignDisplayedWhenFull() {
+        ParkingLot parkingLot = new ParkingLot(1);
+        parkingLot.parkCar(new Car("JKL012"));
+        parkingLot.updateFullSign();
+        assertTrue(parkingLot.isFullSignDisplayed(), "Full sign should be displayed when lot is full.");
+    }
+
+    @Test
+    void testFullSignRemovedWhenSpaceAvailable() {
+        ParkingLot parkingLot = new ParkingLot(1);
+        Ticket ticket = parkingLot.parkCar(new Car("MNO345"));
+        parkingLot.updateFullSign();
+        parkingLot.unparkCar(ticket);
+        parkingLot.updateFullSign();
+        assertFalse(parkingLot.isFullSignDisplayed(), "Full sign should be removed when space is available.");
+    }
+
+
+
 }
