@@ -2,6 +2,7 @@ import org.junit.jupiter.api.Test;
 import com.example.Car;
 import com.example.ParkingLot;
 import com.example.Ticket;
+import com.example.DummySecurityObserver;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -84,6 +85,46 @@ class ParkingLotTest {
         assertFalse(parkingLot.isFullSignDisplayed(), "Full sign should be removed when space is available.");
     }
 
+    @Test
+    void testNotifySecurityWhenFull() {
+        ParkingLot parkingLot = new ParkingLot(1);
+        DummySecurityObserver observer = new DummySecurityObserver();
+        parkingLot.registerSecurityObserver(observer);
 
+        parkingLot.parkCar(new Car("PQR678"));
+        parkingLot.updateFullSign();
+
+        assertTrue(observer.isNotifiedFull(), "Security should be notified that the lot is full.");
+    }
+
+    @Test
+    void testNotifySecurityWhenNoLongerFull() {
+        ParkingLot parkingLot = new ParkingLot(1);
+        DummySecurityObserver observer = new DummySecurityObserver();
+        parkingLot.registerSecurityObserver(observer);
+
+        Ticket ticket = parkingLot.parkCar(new Car("STU901"));
+        parkingLot.updateFullSign();
+        parkingLot.unparkCar(ticket);
+        parkingLot.updateFullSign();
+
+        assertFalse(observer.isNotifiedFull(), "Security should be notified that the lot is no longer full.");
+    }
+
+    @Test
+    void testNotificationWhenSpaceBecomesAvailable() {
+        ParkingLot parkingLot = new ParkingLot(1);
+        Car car = new Car("VWX123");
+        Ticket ticket = parkingLot.parkCar(car);
+
+        // Initially, the parking lot is full
+        parkingLot.updateFullSign();
+        assertTrue(parkingLot.isFullSignDisplayed(), "Full sign should be displayed when lot is full.");
+
+        // Unpark the car, making space available
+        parkingLot.unparkCar(ticket);
+        parkingLot.updateFullSign();
+        assertFalse(parkingLot.isFullSignDisplayed(), "Full sign should be removed when space is available.");
+    }
 
 }
