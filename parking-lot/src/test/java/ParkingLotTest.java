@@ -2,6 +2,8 @@ import org.junit.jupiter.api.Test;
 import com.example.Car;
 import com.example.ParkingLot;
 import com.example.Ticket;
+import com.example.DummySecurityObserver;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -65,4 +67,49 @@ class ParkingLotTest {
         ParkingLot parkingLot = new ParkingLot(100);
         assertNull(parkingLot.unparkCar(null), "Unparking should fail for a null ticket.");
     }
+
+    @Test
+    void testFullSignDisplayedWhenFull() {
+        ParkingLot parkingLot = new ParkingLot(1);
+        parkingLot.parkCar(new Car("JKL012"));
+        parkingLot.updateFullSign();
+        assertTrue(parkingLot.isFullSignDisplayed(), "Full sign should be displayed when lot is full.");
+    }
+
+    @Test
+    void testFullSignRemovedWhenSpaceAvailable() {
+        ParkingLot parkingLot = new ParkingLot(1);
+        Ticket ticket = parkingLot.parkCar(new Car("MNO345"));
+        parkingLot.updateFullSign();
+        parkingLot.unparkCar(ticket);
+        parkingLot.updateFullSign();
+        assertFalse(parkingLot.isFullSignDisplayed(), "Full sign should be removed when space is available.");
+    }
+
+    @Test
+    void testNotifySecurityWhenFull() {
+        ParkingLot parkingLot = new ParkingLot(1);
+        DummySecurityObserver observer = new DummySecurityObserver();
+        parkingLot.registerSecurityObserver(observer);
+
+        parkingLot.parkCar(new Car("PQR678"));
+        parkingLot.updateFullSign();
+
+        assertTrue(observer.isNotifiedFull(), "Security should be notified that the lot is full.");
+    }
+
+    @Test
+    void testNotifySecurityWhenNoLongerFull() {
+        ParkingLot parkingLot = new ParkingLot(1);
+        DummySecurityObserver observer = new DummySecurityObserver();
+        parkingLot.registerSecurityObserver(observer);
+
+        Ticket ticket = parkingLot.parkCar(new Car("STU901"));
+        parkingLot.updateFullSign();
+        parkingLot.unparkCar(ticket);
+        parkingLot.updateFullSign();
+
+        assertFalse(observer.isNotifiedFull(), "Security should be notified that the lot is no longer full.");
+    }
+
 }
