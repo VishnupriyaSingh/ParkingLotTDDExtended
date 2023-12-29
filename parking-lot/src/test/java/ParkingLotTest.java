@@ -4,7 +4,6 @@ import com.example.ParkingLot;
 import com.example.Ticket;
 import com.example.DummySecurityObserver;
 
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class ParkingLotTest {
