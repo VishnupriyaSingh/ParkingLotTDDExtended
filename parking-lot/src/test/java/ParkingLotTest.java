@@ -57,9 +57,11 @@ class ParkingLotTest {
     @Test
     void testUnparkCarWithInvalidTicket() {
         ParkingLot parkingLot = new ParkingLot(100);
-        Ticket invalidTicket = new Ticket("Invalid123");
+        // Update the constructor call to include a dummy parking spot
+        Ticket invalidTicket = new Ticket("Invalid123", "InvalidSpot");
         assertNull(parkingLot.unparkCar(invalidTicket), "Unparking should fail for an invalid ticket.");
     }
+
 
     @Test
     void testUnparkCarWithNullTicket() {
@@ -125,6 +127,27 @@ class ParkingLotTest {
         parkingLot.unparkCar(ticket);
         parkingLot.updateFullSign();
         assertFalse(parkingLot.isFullSignDisplayed(), "Full sign should be removed when space is available.");
+    }
+
+    @Test
+    void testFindCar() {
+        ParkingLot parkingLot = new ParkingLot(10);
+        Car car = new Car("BCD789");
+        Ticket ticket = parkingLot.parkCar(car);
+
+        String parkingSpot = parkingLot.findCar(ticket);
+        assertEquals(ticket.getParkingSpot(), parkingSpot, "Should be able to find the parked car and get its parking spot.");
+    }
+
+
+
+    @Test
+    void testFindCarWithInvalidTicket() {
+        ParkingLot parkingLot = new ParkingLot(10);
+        Ticket invalidTicket = new Ticket("InvalidTicket", "InvalidSpot");
+
+        String result = parkingLot.findCar(invalidTicket);
+        assertEquals("Car not found", result, "Should not find a car with an invalid ticket.");
     }
 
 }

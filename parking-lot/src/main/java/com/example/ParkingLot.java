@@ -20,6 +20,14 @@ public class ParkingLot {
         this.parkedCars = new HashMap<>();
     }
 
+    public String findCar(Ticket ticket) {
+        if (ticket == null || !parkedCars.containsValue(ticket)) {
+            return "Car not found";
+        }
+
+        return ticket.getParkingSpot();
+    }
+
     public Ticket parkCar(Car car) {
         if (car == null) {
             throw new IllegalArgumentException("Car cannot be null");
@@ -30,7 +38,8 @@ public class ParkingLot {
             return null;
         }
 
-        Ticket ticket = new Ticket(UUID.randomUUID().toString()); //random ticket generation 
+        String parkingSpot = "Spot_" + (parkedCars.size() + 1); // Simple logic for assigning parking spots
+        Ticket ticket = new Ticket(UUID.randomUUID().toString(), parkingSpot);
         parkedCars.put(car, ticket);
         return ticket;
     }
