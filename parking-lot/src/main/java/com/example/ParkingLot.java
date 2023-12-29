@@ -6,6 +6,7 @@ import java.util.UUID;
 public class ParkingLot {
     private int capacity;
     private Map<Car, Ticket> parkedCars;
+    private boolean isFullSignDisplayed = false;
 
     public ParkingLot(int capacity) {
         this.capacity = capacity;
@@ -48,4 +49,31 @@ public class ParkingLot {
     public boolean isFull() {
         return parkedCars.size() >= capacity;
     }
+
+    public boolean isFullSignDisplayed() {
+        return isFullSignDisplayed;
+    }
+
+    public void updateFullSign() {
+        if (isFull() && !isFullSignDisplayed) {
+            displayFullSign();
+            isFullSignDisplayed = true;
+        } else if (!isFull() && isFullSignDisplayed) {
+            removeFullSign();
+            isFullSignDisplayed = false;
+        }
+    }
+
+    private void displayFullSign() {
+        // Simulate displaying the "Full" sign
+        System.out.println("Parking Lot is Full. Full sign displayed.");
+    }
+
+    private void removeFullSign() {
+        // Simulate removing the "Full" sign
+        System.out.println("Parking Lot is not full anymore. Full sign removed.");
+    }
+
+
+
 }
