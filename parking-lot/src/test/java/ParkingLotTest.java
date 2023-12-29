@@ -1,9 +1,18 @@
 import org.junit.jupiter.api.Test;
 import com.example.Car;
 import com.example.ParkingLot;
+import com.example.Ticket;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ParkingLotTest {
+
+    // Helper method to fill the parking lot
+    private void fillParkingLot(ParkingLot parkingLot, int numberOfCars) {
+        for (int i = 0; i < numberOfCars; i++) {
+            parkingLot.parkCar(new Car("CAR" + i));
+        }
+    }
 
     @Test
     void testParkingAvailability() {
@@ -33,10 +42,27 @@ class ParkingLotTest {
         assertThrows(IllegalArgumentException.class, () -> parkingLot.parkCar(null));
     }
 
-    // Helper method to fill the parking lot
-    private void fillParkingLot(ParkingLot parkingLot, int numberOfCars) {
-        for (int i = 0; i < numberOfCars; i++) {
-            parkingLot.parkCar(new Car("CAR" + i));
-        }
+    @Test
+    void testUnparkCar() {
+        ParkingLot parkingLot = new ParkingLot(100);
+        Car car = new Car("GHI789");
+        Ticket ticket = parkingLot.parkCar(car);
+        assertNotNull(ticket, "Car should have been parked successfully.");
+
+        Car unparkedCar = parkingLot.unparkCar(ticket);
+        assertEquals(car, unparkedCar, "Unparked car should match the parked car.");
+    }
+
+    @Test
+    void testUnparkCarWithInvalidTicket() {
+        ParkingLot parkingLot = new ParkingLot(100);
+        Ticket invalidTicket = new Ticket("Invalid123");
+        assertNull(parkingLot.unparkCar(invalidTicket), "Unparking should fail for an invalid ticket.");
+    }
+
+    @Test
+    void testUnparkCarWithNullTicket() {
+        ParkingLot parkingLot = new ParkingLot(100);
+        assertNull(parkingLot.unparkCar(null), "Unparking should fail for a null ticket.");
     }
 }
