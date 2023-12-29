@@ -4,12 +4,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.time.LocalDateTime;
 
 public class ParkingLot {
     private int capacity;
     private Map<Car, Ticket> parkedCars;
     private boolean isFullSignDisplayed = false;
     private List<SecurityObserver> securityObservers = new ArrayList<>();
+    public static final double RATE_PER_HOUR = 5.0;  //rate of parking
 
     public void registerSecurityObserver(SecurityObserver observer) {
         securityObservers.add(observer);
@@ -39,7 +41,7 @@ public class ParkingLot {
         }
 
         String parkingSpot = "Spot_" + (parkedCars.size() + 1); // Simple logic for assigning parking spots
-        Ticket ticket = new Ticket(UUID.randomUUID().toString(), parkingSpot);
+        Ticket ticket = new Ticket(UUID.randomUUID().toString(), parkingSpot, LocalDateTime.now());
         parkedCars.put(car, ticket);
         return ticket;
     }
@@ -95,6 +97,15 @@ public class ParkingLot {
     private void removeFullSign() {
         // Simulate removing the "Full" sign
         System.out.println("Parking Lot is not full anymore. Full sign removed.");
+    }
+
+    public double calculateCharge(Ticket ticket) {
+        if (ticket == null) {
+            return 0.0;
+        }
+
+        long hoursParked = java.time.Duration.between(ticket.getParkedAt(), LocalDateTime.now()).toHours();
+        return hoursParked * RATE_PER_HOUR;
     }
 
 }

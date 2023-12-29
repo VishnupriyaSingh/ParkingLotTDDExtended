@@ -6,6 +6,8 @@ import com.example.DummySecurityObserver;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.LocalDateTime;
+
 class ParkingLotTest {
 
     // Helper method to fill the parking lot
@@ -55,12 +57,13 @@ class ParkingLotTest {
     }
 
     @Test
-    void testUnparkCarWithInvalidTicket() {
-        ParkingLot parkingLot = new ParkingLot(100);
-        // Update the constructor call to include a dummy parking spot
-        Ticket invalidTicket = new Ticket("Invalid123", "InvalidSpot");
-        assertNull(parkingLot.unparkCar(invalidTicket), "Unparking should fail for an invalid ticket.");
-    }
+void testUnparkCarWithInvalidTicket() {
+    ParkingLot parkingLot = new ParkingLot(100);
+    // Updated constructor call to include a dummy LocalDateTime value
+    Ticket invalidTicket = new Ticket("Invalid123", "InvalidSpot", LocalDateTime.now());
+    assertNull(parkingLot.unparkCar(invalidTicket), "Unparking should fail for an invalid ticket.");
+}
+
 
 
     @Test
@@ -139,15 +142,27 @@ class ParkingLotTest {
         assertEquals(ticket.getParkingSpot(), parkingSpot, "Should be able to find the parked car and get its parking spot.");
     }
 
-
-
     @Test
     void testFindCarWithInvalidTicket() {
         ParkingLot parkingLot = new ParkingLot(10);
-        Ticket invalidTicket = new Ticket("InvalidTicket", "InvalidSpot");
-
+        // Updated constructor call to include a dummy LocalDateTime value
+        Ticket invalidTicket = new Ticket("InvalidTicket", "InvalidSpot", LocalDateTime.now());
+    
         String result = parkingLot.findCar(invalidTicket);
         assertEquals("Car not found", result, "Should not find a car with an invalid ticket.");
+    }
+    
+
+    @Test
+    void testCalculateParkingCharge() {
+        ParkingLot parkingLot = new ParkingLot(10);
+        Car car = new Car("EFG123");
+        // Simulate parking the car one hour ago
+        LocalDateTime oneHourAgo = LocalDateTime.now().minusHours(1);
+        Ticket ticket = new Ticket("TestTicket", "TestSpot", oneHourAgo);
+
+        double charge = parkingLot.calculateCharge(ticket);
+        assertEquals(ParkingLot.RATE_PER_HOUR, charge, "Charge should be for one hour of parking.");
     }
 
 }
