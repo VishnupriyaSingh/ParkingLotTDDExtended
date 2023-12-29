@@ -27,6 +27,24 @@ public class ParkingLot {
         return ticket;
     }
 
+    public Car unparkCar(Ticket ticket) {
+        if (ticket == null || !parkedCars.containsValue(ticket)) {
+            return null;
+        }
+
+        Car carToUnpark = parkedCars.entrySet().stream()
+            .filter(entry -> ticket.equals(entry.getValue()))
+            .map(Map.Entry::getKey)
+            .findFirst()
+            .orElse(null);
+
+        if (carToUnpark != null) {
+            parkedCars.remove(carToUnpark);
+        }
+
+        return carToUnpark;
+    }
+
     public boolean isFull() {
         return parkedCars.size() >= capacity;
     }
