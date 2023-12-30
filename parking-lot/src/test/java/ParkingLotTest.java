@@ -9,6 +9,7 @@ import com.example.ParkingAttendant;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Map;
+import java.util.UUID;
 
 class ParkingLotTest {
 
@@ -216,6 +217,23 @@ class ParkingLotTest {
 
         Map<Car, String> recentCars = parkingLot.findCarsParkedWithinLastMinutes(30);
         assertEquals(1, recentCars.size(), "There should be 1 car parked in the last 30 minutes.");
+    }
+
+    @Test
+    void testFindSmallHandicapCarsInRowsBAndD() {
+        ParkingLot parkingLot = new ParkingLot(10);
+        parkingLot.parkCar(new Car("HANDICAP1", "Blue", "Brand", "Model", "small", true), "B");
+        parkingLot.parkCar(new Car("HANDICAP2", "Red", "Brand", "Model", "large", true), "D");
+        parkingLot.parkCar(new Car("HANDICAP3", "Green", "Brand", "Model", "small", true), "D");
+
+        Map<Car, Ticket> cars = parkingLot.findSmallHandicapCarsInRows("B", "D");
+        assertEquals(2, cars.size(), "There should be 2 small handicap cars in rows B and D.");
+    }
+
+    // Helper method for parking a car in a specific row (for testing)
+    private void parkCar(ParkingLot parkingLot, Car car, String row) {
+        String parkingSpot = row + "-" + (parkingLot.getNumberOfParkedCars() + 1);
+        parkingLot.getParkedCars().put(car, new Ticket(UUID.randomUUID().toString(), parkingSpot, LocalDateTime.now(), "Test Attendant", row));
     }
 
 }
