@@ -43,6 +43,13 @@ public class ParkingLot {
                          .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getParkingSpot()));
     }
 
+    public Map<Car, String> findCarsParkedWithinLastMinutes(int minutes) {
+        LocalDateTime thirtyMinutesAgo = LocalDateTime.now().minusMinutes(minutes);
+        return parkedCars.entrySet().stream()
+                         .filter(entry -> entry.getValue().getParkedAt().isAfter(thirtyMinutesAgo))
+                         .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getParkingSpot()));
+    }
+
     public Ticket parkCar(Car car) {
         if (car == null) {
             throw new IllegalArgumentException("Car cannot be null");
@@ -53,9 +60,9 @@ public class ParkingLot {
             return null;
         }
 
-        String parkingSpot = "Spot_" + (parkedCars.size() + 1); // Simple logic for assigning parking spots
-        String attendantName = "Unknown Attendant"; // Placeholder, adjust as needed
-        Ticket ticket = new Ticket(UUID.randomUUID().toString(), parkingSpot, LocalDateTime.now(), attendantName);
+        String parkingSpot = "Spot_" + (parkedCars.size() + 1);
+        String attendantName = "Unknown Attendant"; // or fetch the actual attendant name if available
+        Ticket ticket = new Ticket(UUID.randomUUID().toString(), parkingSpot, parkedAt, attendantName);
         parkedCars.put(car, ticket);
         return ticket;
     }
