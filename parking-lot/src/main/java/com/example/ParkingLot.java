@@ -83,6 +83,10 @@ public class ParkingLot {
         notifySecurityObservers();
     }
 
+    public int getNumberOfParkedCars() {
+        return parkedCars.size();
+    }
+
     private void notifySecurityObservers() {
         for (SecurityObserver observer : securityObservers) {
             observer.notify(isFull());
