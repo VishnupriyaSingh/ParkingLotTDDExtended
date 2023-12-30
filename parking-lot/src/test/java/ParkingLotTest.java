@@ -202,4 +202,20 @@ class ParkingLotTest {
         Map<Car, String> parkedBMWs = parkingLot.findCarsByMake("BMW");
         assertEquals(2, parkedBMWs.size(), "There should be 2 BMW cars in the lot.");
     }
+
+    @Test
+    void testFindCarsParkedInLast30Minutes() {
+        ParkingLot parkingLot = new ParkingLot(10);
+        Car car1 = new Car("CAR123", "Blue", "Brand", "Model");
+        LocalDateTime twentyMinutesAgo = LocalDateTime.now().minusMinutes(20);
+        parkingLot.parkCar(car1, twentyMinutesAgo); // Park a car 20 minutes ago
+
+        Car car2 = new Car("CAR456", "Red", "Brand", "Model");
+        LocalDateTime fortyMinutesAgo = LocalDateTime.now().minusMinutes(40);
+        parkingLot.parkCar(car2, fortyMinutesAgo); // Park a car 40 minutes ago
+
+        Map<Car, String> recentCars = parkingLot.findCarsParkedWithinLastMinutes(30);
+        assertEquals(1, recentCars.size(), "There should be 1 car parked in the last 30 minutes.");
+    }
+
 }
