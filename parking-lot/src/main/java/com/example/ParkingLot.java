@@ -48,7 +48,8 @@ public class ParkingLot {
         }
 
         String parkingSpot = "Spot_" + (parkedCars.size() + 1); // Simple logic for assigning parking spots
-        Ticket ticket = new Ticket(UUID.randomUUID().toString(), parkingSpot, LocalDateTime.now());
+        String attendantName = "Unknown Attendant"; // Placeholder, adjust as needed
+        Ticket ticket = new Ticket(UUID.randomUUID().toString(), parkingSpot, LocalDateTime.now(), attendantName);
         parkedCars.put(car, ticket);
         return ticket;
     }

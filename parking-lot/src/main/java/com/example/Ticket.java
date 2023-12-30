@@ -5,11 +5,13 @@ public class Ticket {
     private String ticketId;
     private String parkingSpot;
     private LocalDateTime parkedAt;
+    private String attendantName;
 
-    public Ticket(String ticketId, String parkingSpot, LocalDateTime parkedAt) {
+    public Ticket(String ticketId, String parkingSpot, LocalDateTime parkedAt, String attendantName) {
         this.ticketId = ticketId;
         this.parkingSpot = parkingSpot;
-        this.parkedAt = parkedAt != null ? parkedAt : LocalDateTime.now();
+        this.parkedAt = parkedAt;
+        this.attendantName = attendantName;
     }
 
     public String getTicketId() {
@@ -22,5 +24,9 @@ public class Ticket {
 
     public LocalDateTime getParkedAt() {
         return parkedAt;
+    }
+
+    public String getAttendantName() {
+        return attendantName;
     }
 }
