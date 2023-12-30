@@ -68,6 +68,10 @@ public class ParkingLot {
         return !isFull(); // Simplified; in reality, this would involve more complex logic
     }
 
+    public int getNumberOfFreeSpaces() {
+        return capacity - parkedCars.size(); // Number of free spaces is total capacity minus the number of parked cars
+    }
+
     public boolean isFull() {
         return parkedCars.size() >= capacity;
     }
