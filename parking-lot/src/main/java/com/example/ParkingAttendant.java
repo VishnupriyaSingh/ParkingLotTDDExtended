@@ -9,12 +9,21 @@ public class ParkingAttendant {
         this.parkingLots = parkingLots;
     }
 
-    public Ticket parkCar(Car car, boolean isHandicap) {
-        ParkingLot selectedLot = isHandicap ? findLotWithNearestFreeSpace() : findLotWithLeastCars();
+    public Ticket parkCar(Car car, boolean isHandicap, boolean isLarge) {
+        ParkingLot selectedLot;
+
+        if (isHandicap) {
+            selectedLot = findLotWithNearestFreeSpace();
+        } else if (isLarge) {
+            selectedLot = findLotWithMostFreeSpaces();
+        } else {
+            selectedLot = findLotWithLeastCars();
+        }
+
         if (selectedLot != null) {
             return selectedLot.parkCar(car);
         }
-        return null; // Or handle this case as per the requirement
+        return null;
     }
 
     private ParkingLot findLotWithLeastCars() {
@@ -27,6 +36,12 @@ public class ParkingAttendant {
         return parkingLots.stream()
                           .filter(ParkingLot::hasNearestFreeSpace)
                           .findFirst()
+                          .orElse(null);
+    }
+
+    private ParkingLot findLotWithMostFreeSpaces() {
+        return parkingLots.stream()
+                          .max(Comparator.comparing(ParkingLot::getNumberOfFreeSpaces))
                           .orElse(null);
     }
 }
