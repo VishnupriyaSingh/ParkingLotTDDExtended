@@ -17,20 +17,19 @@ class ParkingAttendantTest {
     void testParkingAttendantParksCar() {
         List<ParkingLot> parkingLots = Collections.singletonList(new ParkingLot(10));
         ParkingAttendant attendant = new ParkingAttendant(parkingLots);
-        Car car = new Car("YZA456");
+        Car car = new Car("YZA456", "AnyColor");  // Added color parameter
 
-        // Update the method call with additional parameters
         Ticket ticket = attendant.parkCar(car, false, false); // false for handicap, false for large car
         assertNotNull(ticket, "Parking attendant should successfully park the car and return a ticket.");
     }
+
     @Test
     void testEvenDistributionOfCars() {
         List<ParkingLot> parkingLots = Arrays.asList(new ParkingLot(10), new ParkingLot(10));
         ParkingAttendant attendant = new ParkingAttendant(parkingLots);
 
-        // Update the method calls with additional parameters
-        attendant.parkCar(new Car("CAR1"), false, false); // false for handicap, false for large car
-        attendant.parkCar(new Car("CAR2"), false, false); // false for handicap, false for large car
+        attendant.parkCar(new Car("CAR1", "AnyColor"), false, false); // false for handicap, false for large car
+        attendant.parkCar(new Car("CAR2", "AnyColor"), false, false); // false for handicap, false for large car
 
         assertEquals(1, parkingLots.get(0).getNumberOfParkedCars(), "First lot should have 1 car.");
         assertEquals(1, parkingLots.get(1).getNumberOfParkedCars(), "Second lot should have 1 car.");
@@ -40,9 +39,8 @@ class ParkingAttendantTest {
     void testHandicapParking() {
         List<ParkingLot> parkingLots = Arrays.asList(new ParkingLot(10), new ParkingLot(10));
         ParkingAttendant attendant = new ParkingAttendant(parkingLots);
-        Car handicapCar = new Car("HANDICAP1");
+        Car handicapCar = new Car("HANDICAP1", "AnyColor");  // Added color parameter
 
-        // Update the call to include the isLarge parameter (false in this case)
         Ticket ticket = attendant.parkCar(handicapCar, true, false); // true for handicap, false for large car
         assertNotNull(ticket, "Parking attendant should successfully park the handicap car in the nearest space.");
     }
@@ -51,7 +49,7 @@ class ParkingAttendantTest {
     void testLargeCarParking() {
         List<ParkingLot> parkingLots = Arrays.asList(new ParkingLot(20), new ParkingLot(10));
         ParkingAttendant attendant = new ParkingAttendant(parkingLots);
-        Car largeCar = new Car("LARGE1");
+        Car largeCar = new Car("LARGE1", "AnyColor");  // Added color parameter
 
         Ticket ticket = attendant.parkCar(largeCar, false, true); // false for handicap, true for large car
         assertNotNull(ticket, "Parking attendant should successfully park the large car in the lot with most spaces.");

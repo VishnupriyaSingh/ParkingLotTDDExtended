@@ -1,9 +1,10 @@
 package com.example;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.time.LocalDateTime;
 
 public class ParkingLot {
@@ -28,6 +29,12 @@ public class ParkingLot {
         }
 
         return ticket.getParkingSpot();
+    }
+
+    public Map<Car, String> findCarsByColor(String color) {
+        return parkedCars.entrySet().stream()
+                         .filter(entry -> color.equalsIgnoreCase(entry.getKey().getColor()))
+                         .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getParkingSpot()));
     }
 
     public Ticket parkCar(Car car) {
