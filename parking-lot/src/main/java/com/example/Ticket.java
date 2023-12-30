@@ -6,13 +6,15 @@ public class Ticket {
     private String parkingSpot;
     private LocalDateTime parkedAt;
     private String attendantName;
+    private String parkingRow; // The row in which the car is parked
 
     // Constructor
-    public Ticket(String ticketId, String parkingSpot, LocalDateTime parkedAt, String attendantName) {
+    public Ticket(String ticketId, String parkingSpot, LocalDateTime parkedAt, String attendantName, String parkingRow) {
         this.ticketId = ticketId;
         this.parkingSpot = parkingSpot;
         this.parkedAt = parkedAt;
         this.attendantName = attendantName;
+        this.parkingRow = parkingRow;
     }
 
     // Getters
@@ -32,20 +34,7 @@ public class Ticket {
         return attendantName;
     }
 
-    // Setters (if modification of fields is required after object creation)
-    public void setTicketId(String ticketId) {
-        this.ticketId = ticketId;
-    }
-
-    public void setParkingSpot(String parkingSpot) {
-        this.parkingSpot = parkingSpot;
-    }
-
-    public void setParkedAt(LocalDateTime parkedAt) {
-        this.parkedAt = parkedAt;
-    }
-
-    public void setAttendantName(String attendantName) {
-        this.attendantName = attendantName;
+    public String getParkingRow() {
+        return parkingRow;
     }
 }

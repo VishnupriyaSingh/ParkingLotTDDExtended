@@ -1,6 +1,7 @@
 package com.example;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.UUID;
@@ -48,6 +49,13 @@ public class ParkingLot {
         return parkedCars.entrySet().stream()
                          .filter(entry -> entry.getValue().getParkedAt().isAfter(thirtyMinutesAgo))
                          .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getParkingSpot()));
+    }
+
+    public Map<Car, Ticket> findSmallHandicapCarsInRows(String... rows) {
+        return parkedCars.entrySet().stream()
+                         .filter(entry -> entry.getKey().isHandicap() && "small".equalsIgnoreCase(entry.getKey().getSize()))
+                         .filter(entry -> Arrays.asList(rows).contains(entry.getValue().getParkingRow()))
+                         .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     public Ticket parkCar(Car car) {
