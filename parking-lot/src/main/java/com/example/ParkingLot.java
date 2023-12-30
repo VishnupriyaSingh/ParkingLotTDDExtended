@@ -37,6 +37,12 @@ public class ParkingLot {
                          .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getParkingSpot()));
     }
 
+    public Map<Car, String> findCarsByMake(String make) {
+        return parkedCars.entrySet().stream()
+                         .filter(entry -> make.equalsIgnoreCase(entry.getKey().getMake()))
+                         .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getParkingSpot()));
+    }
+
     public Ticket parkCar(Car car) {
         if (car == null) {
             throw new IllegalArgumentException("Car cannot be null");
