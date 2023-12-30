@@ -4,7 +4,10 @@ import com.example.Car;
 import com.example.ParkingLot;
 import com.example.Ticket;
 import com.example.DummySecurityObserver;
+import com.example.ParkingAttendant;
+
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.Map;
 
 class ParkingLotTest {
@@ -175,5 +178,20 @@ class ParkingLotTest {
 
         Map<Car, String> whiteCars = parkingLot.findCarsByColor("White");
         assertEquals(2, whiteCars.size(), "There should be 2 white cars in the lot.");
+    }
+
+    @Test
+    void testFindBlueToyotaCars() {
+        ParkingLot parkingLot = new ParkingLot(10);
+        ParkingAttendant attendant = new ParkingAttendant("John Doe", Collections.singletonList(parkingLot));
+        parkingLot.parkCar(new Car("BLUE1", "Blue", "Toyota", "Camry"), false, false);
+        parkingLot.parkCar(new Car("RED1", "Red", "Toyota", "Corolla"), false, false);
+
+        Map<Car, String> blueToyotas = parkingLot.findCarsByMakeAndColor("Toyota", "Blue");
+        assertEquals(1, blueToyotas.size(), "There should be 1 blue Toyota car in the lot.");
+
+        // Assuming a method in ParkingLot to get ticket details by car
+        Ticket ticket = parkingLot.getTicketDetails(blueToyotas.keySet().iterator().next());
+        assertEquals("John Doe", ticket.getAttendantName(), "Attendant's name should be John Doe.");
     }
 }
