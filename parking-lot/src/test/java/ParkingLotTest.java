@@ -58,7 +58,6 @@ class ParkingLotTest {
         assertEquals(car, unparkedCar, "Unparked car should match the parked car.");
     }
 
-
     @Test
     void testUnparkCarWithInvalidTicket() {
         ParkingLot parkingLot = new ParkingLot(100);
@@ -66,8 +65,6 @@ class ParkingLotTest {
         Ticket invalidTicket = new Ticket("Invalid123", "InvalidSpot", LocalDateTime.now());
         assertNull(parkingLot.unparkCar(invalidTicket), "Unparking should fail for an invalid ticket.");
     }
-
-
 
     @Test
     void testUnparkCarWithNullTicket() {
@@ -193,5 +190,16 @@ class ParkingLotTest {
         // Assuming a method in ParkingLot to get ticket details by car
         Ticket ticket = parkingLot.getTicketDetails(blueToyotas.keySet().iterator().next());
         assertEquals("John Doe", ticket.getAttendantName(), "Attendant's name should be John Doe.");
+    }
+
+    @Test
+    void testFindParkedBMWCars() {
+        ParkingLot parkingLot = new ParkingLot(10);
+        parkingLot.parkCar(new Car("BMW001", "Black", "BMW", "M3"));
+        parkingLot.parkCar(new Car("AUDI001", "Red", "Audi", "A4"));
+        parkingLot.parkCar(new Car("BMW002", "Blue", "BMW", "X5"));
+
+        Map<Car, String> parkedBMWs = parkingLot.findCarsByMake("BMW");
+        assertEquals(2, parkedBMWs.size(), "There should be 2 BMW cars in the lot.");
     }
 }
