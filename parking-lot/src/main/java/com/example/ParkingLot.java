@@ -149,6 +149,9 @@ public class ParkingLot {
         return hoursParked * RATE_PER_HOUR;
     }
 
+    public Map<Car, Ticket> getAllParkedCars() {
+        return new HashMap<>(parkedCars);
+    }
 }
 
 interface SecurityObserver {

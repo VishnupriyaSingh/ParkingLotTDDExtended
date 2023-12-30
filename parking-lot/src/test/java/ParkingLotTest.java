@@ -16,14 +16,14 @@ class ParkingLotTest {
     // Helper method to fill the parking lot
     private void fillParkingLot(ParkingLot parkingLot, int numberOfCars) {
         for (int i = 0; i < numberOfCars; i++) {
-            parkingLot.parkCar(new Car("CAR" + i, "AnyColor")); // Added color parameter
+            parkingLot.parkCar(new Car("CAR" + i, "AnyColor")); 
         }
     }
 
     @Test
     void testParkingAvailability() {
         ParkingLot parkingLot = new ParkingLot(100);
-        Car car = new Car("ABC123", "AnyColor"); // Added color parameter
+        Car car = new Car("ABC123", "AnyColor");
         assertNotNull(parkingLot.parkCar(car), "Parking should be successful, but ticket was null.");
     }
 
@@ -31,14 +31,14 @@ class ParkingLotTest {
     void testParkingLotFull() {
         ParkingLot parkingLot = new ParkingLot(100);
         fillParkingLot(parkingLot, 100);
-        Car newCar = new Car("XYZ789", "AnyColor"); // Added color parameter
+        Car newCar = new Car("XYZ789", "AnyColor"); 
         assertNull(parkingLot.parkCar(newCar), "Parking should fail, but a ticket was issued.");
     }
 
     @Test
     void testSuccessfulParking() {
         ParkingLot parkingLot = new ParkingLot(100);
-        Car car = new Car("DEF456", "AnyColor"); // Added color parameter
+        Car car = new Car("DEF456", "AnyColor");
         assertNotNull(parkingLot.parkCar(car), "Expected a valid ticket, but got null.");
     }
 
@@ -51,7 +51,7 @@ class ParkingLotTest {
     @Test
     void testUnparkCar() {
         ParkingLot parkingLot = new ParkingLot(100);
-        Car car = new Car("GHI789", "AnyColor"); // Added color parameter
+        Car car = new Car("GHI789", "AnyColor"); 
         Ticket ticket = parkingLot.parkCar(car);
         assertNotNull(ticket, "Car should have been parked successfully.");
 
@@ -76,7 +76,7 @@ class ParkingLotTest {
     @Test
     void testFullSignDisplayedWhenFull() {
         ParkingLot parkingLot = new ParkingLot(1);
-        parkingLot.parkCar(new Car("JKL012", "AnyColor")); // Added color parameter
+        parkingLot.parkCar(new Car("JKL012", "AnyColor")); 
         parkingLot.updateFullSign();
         assertTrue(parkingLot.isFullSignDisplayed(), "Full sign should be displayed when lot is full.");
     }
@@ -84,7 +84,7 @@ class ParkingLotTest {
     @Test
     void testFullSignRemovedWhenSpaceAvailable() {
         ParkingLot parkingLot = new ParkingLot(1);
-        Ticket ticket = parkingLot.parkCar(new Car("MNO345", "AnyColor")); // Added color parameter
+        Ticket ticket = parkingLot.parkCar(new Car("MNO345", "AnyColor")); 
         parkingLot.updateFullSign();
         parkingLot.unparkCar(ticket);
         parkingLot.updateFullSign();
@@ -97,7 +97,7 @@ class ParkingLotTest {
         DummySecurityObserver observer = new DummySecurityObserver();
         parkingLot.registerSecurityObserver(observer);
 
-        parkingLot.parkCar(new Car("PQR678", "AnyColor")); // Added color parameter
+        parkingLot.parkCar(new Car("PQR678", "AnyColor")); 
         parkingLot.updateFullSign();
 
         assertTrue(observer.isNotifiedFull(), "Security should be notified that the lot is full.");
@@ -109,7 +109,7 @@ class ParkingLotTest {
         DummySecurityObserver observer = new DummySecurityObserver();
         parkingLot.registerSecurityObserver(observer);
 
-        Ticket ticket = parkingLot.parkCar(new Car("STU901", "AnyColor")); // Added color parameter
+        Ticket ticket = parkingLot.parkCar(new Car("STU901", "AnyColor")); 
         parkingLot.updateFullSign();
         parkingLot.unparkCar(ticket);
         parkingLot.updateFullSign();
@@ -146,14 +146,11 @@ class ParkingLotTest {
     @Test
     void testFindCarWithInvalidTicket() {
         ParkingLot parkingLot = new ParkingLot(10);
-        // Updated constructor call to include a dummy LocalDateTime value
         Ticket invalidTicket = new Ticket("InvalidTicket", "InvalidSpot", LocalDateTime.now());
 
         String result = parkingLot.findCar(invalidTicket);
         assertEquals("Car not found", result, "Should not find a car with an invalid ticket.");
     }
-
-    // ... other test methods ...
 
     @Test
     void testCalculateParkingCharge() {
@@ -230,10 +227,21 @@ class ParkingLotTest {
         assertEquals(2, cars.size(), "There should be 2 small handicap cars in rows B and D.");
     }
 
-    // Helper method for parking a car in a specific row (for testing)
-    private void parkCar(ParkingLot parkingLot, Car car, String row) {
-        String parkingSpot = row + "-" + (parkingLot.getNumberOfParkedCars() + 1);
-        parkingLot.getParkedCars().put(car, new Ticket(UUID.randomUUID().toString(), parkingSpot, LocalDateTime.now(), "Test Attendant", row));
+    @Test
+    void testGetAllParkedCars() {
+        ParkingLot parkingLot = new ParkingLot(10);
+        parkingLot.parkCar(new Car("PLATE1", "Blue", "Make", "Model", "Size", false));
+        parkingLot.parkCar(new Car("PLATE2", "Red", "Make", "Model", "Size", false));
+        parkingLot.parkCar(new Car("PLATE3", "Green", "Make", "Model", "Size", false));
+
+        Map<Car, Ticket> parkedCars = parkingLot.getAllParkedCars();
+        assertEquals(3, parkedCars.size(), "There should be 3 cars parked in the lot.");
+    }
+
+    // Helper method
+    private void parkCar(ParkingLot parkingLot, Car car) {
+        String parkingSpot = "Spot_" + (parkingLot.getNumberOfParkedCars() + 1);
+        parkingLot.getParkedCars().put(car, new Ticket(UUID.randomUUID().toString(), parkingSpot, LocalDateTime.now(), "Test Attendant", "Row"));
     }
 
 }
