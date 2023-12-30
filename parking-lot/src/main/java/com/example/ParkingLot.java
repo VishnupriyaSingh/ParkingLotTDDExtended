@@ -64,6 +64,10 @@ public class ParkingLot {
         return carToUnpark;
     }
 
+    public boolean hasNearestFreeSpace() {
+        return !isFull(); // Simplified; in reality, this would involve more complex logic
+    }
+
     public boolean isFull() {
         return parkedCars.size() >= capacity;
     }
